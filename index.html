@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FreshTrack | Smart Food Expiry Manager</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">🥬</div>
+            <div>
+                <h2>FreshTrack</h2>
+                <span>Smart Pantry</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="#dashboard" class="nav-link active">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="#add-food" class="nav-link">
+                <span>＋</span>
+                Add Item
+            </a>
+
+            <a href="#my-food" class="nav-link">
+                <span>🛒</span>
+                My Items
+            </a>
+
+            <a href="#analytics" class="nav-link">
+                <span>📊</span>
+                Analytics
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="tip-box">
+                <div class="tip-icon">💡</div>
+
+                <div>
+                    <strong>Smart Tip</strong>
+                    <p>Use older food first to reduce waste.</p>
+                </div>
+            </div>
+
+            <button class="theme-button" id="themeToggle">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark Mode</span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div>
+                <span class="page-label">SMART PANTRY</span>
+            </div>
+
+            <div class="topbar-right">
+                <span id="currentDate"></span>
+            </div>
+
+        </header>
+
+
+        <!-- DASHBOARD -->
+        <section id="dashboard" class="page-section">
+
+            <div class="welcome-section">
+
+                <div>
+                    <span class="eyebrow">WELCOME BACK 👋</span>
+
+                    <h1>Keep your food fresh.</h1>
+
+                    <p>
+                        Track your food, monitor expiry dates,
+                        and reduce unnecessary food waste.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- STATISTICS -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon total-icon">🍱</div>
+
+                    <div>
+                        <span>Total Food</span>
+                        <h2 id="totalFood">0</h2>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon seven-icon">📅</div>
+
+                    <div>
+                        <span>Within 7 Days</span>
+                        <h2 id="withinSeven">0</h2>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon three-icon">⚠️</div>
+
+                    <div>
+                        <span>Within 3 Days</span>
+                        <h2 id="withinThree">0</h2>
+                    </div>
+                </div>
+
+
+                <div class="stat-card">
+                    <div class="stat-icon expired-icon">❌</div>
+
+                    <div>
+                        <span>Expired</span>
+                        <h2 id="expiredFood">0</h2>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ALERT -->
+            <div id="expiryAlert" class="expiry-alert hidden">
+
+                <div class="alert-icon">🔔</div>
+
+                <div>
+                    <strong id="alertTitle">Expiry Alert</strong>
+                    <p id="alertMessage"></p>
+                </div>
+
+            </div>
+
+
+            <!-- EXPIRY TIMELINE -->
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <span class="section-label">EXPIRY TIMELINE</span>
+                            <h2>Food Status</h2>
+                        </div>
+                    </div>
+
+                    <div class="timeline">
+
+                        <div class="timeline-row">
+                            <div class="timeline-label">
+                                <span class="timeline-dot today"></span>
+                                Today
+                            </div>
+
+                            <strong id="todayCount">0</strong>
+                        </div>
+
+
+                        <div class="timeline-row">
+                            <div class="timeline-label">
+                                <span class="timeline-dot urgent"></span>
+                                1–3 Days
+                            </div>
+
+                            <strong id="threeDayCount">0</strong>
+                        </div>
+
+
+                        <div class="timeline-row">
+                            <div class="timeline-label">
+                                <span class="timeline-dot warning"></span>
+                                4–7 Days
+                            </div>
+
+                            <strong id="sevenDayCount">0</strong>
+                        </div>
+
+
+                        <div class="timeline-row">
+                            <div class="timeline-label">
+                                <span class="timeline-dot safe"></span>
+                                Safe
+                            </div>
+
+                            <strong id="safeCount">0</strong>
+                        </div>
+
+
+                        <div class="timeline-row">
+                            <div class="timeline-label">
+                                <span class="timeline-dot expired"></span>
+                                Expired
+                            </div>
+
+                            <strong id="expiredTimelineCount">0</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CATEGORY OVERVIEW -->
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <span class="section-label">CATEGORY OVERVIEW</span>
+                            <h2>Food Categories</h2>
+                        </div>
+
+                    </div>
+
+                    <div id="categoryOverview" class="category-overview">
+                        <!-- Generated by JavaScript -->
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ADD FOOD -->
+        <section id="add-food" class="page-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-label">PANTRY MANAGEMENT</span>
+
+                    <h2 id="formTitle">Add Food Item</h2>
+
+                    <p>
+                        Add food to your pantry and track its expiry date.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <form id="foodForm" class="food-form">
+
+                <input type="hidden" id="editingId">
+
+
+                <!-- CATEGORY FIRST -->
+                <div class="form-group">
+
+                    <label for="category">
+                        Category
+                    </label>
+
+                    <select id="category" required>
+
+                        <option value="">Select category</option>
+
+                        <option value="Dairy">🥛 Dairy</option>
+                        <option value="Meat">🥩 Meat</option>
+                        <option value="Vegetables">🥦 Vegetables</option>
+                        <option value="Fruits">🍎 Fruits</option>
+                        <option value="Bakery">🍞 Bakery</option>
+                        <option value="Canned / Packaged">🥫 Canned / Packaged</option>
+                        <option value="Beverages">🥤 Beverages</option>
+                        <option value="Frozen Food">🧊 Frozen Food</option>
+                        <option value="Snacks">🍪 Snacks</option>
+                        <option value="Grains & Cereals">🌾 Grains & Cereals</option>
+                        <option value="Spices & Condiments">🧂 Spices & Condiments</option>
+                        <option value="Other Food">🍱 Other Food</option>
+
+                    </select>
+
+                    <small class="error" id="categoryError"></small>
+
+                </div>
+
+
+                <!-- ITEM NAME SECOND -->
+                <div class="form-group">
+
+                    <label for="foodName">
+                        Item Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="foodName"
+                        placeholder="Example: Milk"
+                        maxlength="60"
+                        required
+                    >
+
+                    <small class="error" id="nameError"></small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="expiryDate">
+                        Expiry Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="expiryDate"
+                        required
+                    >
+
+                    <small class="error" id="dateError"></small>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button type="submit" class="primary-button">
+                        <span>＋</span>
+                        <span id="submitText">Add Item</span>
+                    </button>
+
+                    <button
+                        type="button"
+                        id="cancelEdit"
+                        class="secondary-button hidden"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- MY FOOD -->
+        <section id="my-food" class="page-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-label">YOUR PANTRY</span>
+                    <h2>My Food Items</h2>
+                    <p id="foodCount">0 items</p>
+                </div>
+
+                <button
+                    type="button"
+                    class="export-button"
+                    id="exportCsv"
+                >
+                    ↓ Export CSV
+                </button>
+
+            </div>
+
+
+            <!-- SEARCH / FILTER -->
+            <div class="filter-panel">
+
+                <!-- CATEGORY FIRST -->
+                <div class="filter-group">
+
+                    <label for="categoryFilter">
+                        Category
+                    </label>
+
+                    <select id="categoryFilter">
+
+                        <option value="all">All Categories</option>
+
+                        <option value="Dairy">Dairy</option>
+                        <option value="Meat">Meat</option>
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Fruits">Fruits</option>
+                        <option value="Bakery">Bakery</option>
+                        <option value="Canned / Packaged">Canned / Packaged</option>
+                        <option value="Beverages">Beverages</option>
+                        <option value="Frozen Food">Frozen Food</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Grains & Cereals">Grains & Cereals</option>
+                        <option value="Spices & Condiments">Spices & Condiments</option>
+                        <option value="Other Food">Other Food</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- SEARCH SECOND -->
+                <div class="filter-group search-group">
+
+                    <label for="searchInput">
+                        Search Item
+                    </label>
+
+                    <div class="search-wrapper">
+
+                        <span>⌕</span>
+
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search food item..."
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="filter-group">
+
+                    <label for="sortFilter">
+                        Sort By
+                    </label>
+
+                    <select id="sortFilter">
+
+                        <option value="expiryAsc">
+                            Expiry: Soonest
+                        </option>
+
+                        <option value="expiryDesc">
+                            Expiry: Latest
+                        </option>
+
+                        <option value="nameAsc">
+                            Name: A–Z
+                        </option>
+
+                        <option value="nameDesc">
+                            Name: Z–A
+                        </option>
+
+                        <option value="category">
+                            Category
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- FOOD LIST -->
+            <div id="foodList" class="food-grid">
+
+                <!-- Generated by JavaScript -->
+
+            </div>
+
+
+            <!-- EMPTY STATE -->
+            <div id="emptyState" class="empty-state hidden">
+
+                <div class="empty-icon">🍽️</div>
+
+                <h3>No food items found</h3>
+
+                <p>
+                    Add a food item or change your search filters.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ANALYTICS -->
+        <section id="analytics" class="page-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-label">INSIGHTS</span>
+                    <h2>Usage Statistics</h2>
+
+                    <p>
+                        Track how your pantry items are being used.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="analytics-grid">
+
+                <div class="analytics-card">
+
+                    <div class="analytics-icon">✅</div>
+
+                    <div>
+                        <span>Used / Consumed</span>
+                        <strong id="usedCount">0</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="analytics-card">
+
+                    <div class="analytics-icon">❌</div>
+
+                    <div>
+                        <span>Expired</span>
+                        <strong id="analyticsExpired">0</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="analytics-card">
+
+                    <div class="analytics-icon">📦</div>
+
+                    <div>
+                        <span>Currently Stored</span>
+                        <strong id="storedCount">0</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="analytics-card">
+
+                    <div class="analytics-icon">♻️</div>
+
+                    <div>
+                        <span>Waste Rate</span>
+                        <strong id="wasteRate">0%</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer>
+
+            <p>
+                FreshTrack © 2026 · Smart Food Expiry Management
+            </p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
